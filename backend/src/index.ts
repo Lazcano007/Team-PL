@@ -2,9 +2,9 @@ import express from 'express';
 import mongoose from 'mongoose';
 import connectDB from "./database/db";
 import dotenv from 'dotenv';
-import { User } from './model/userInterface';
-import { Order } from './model/orderInterface';
-import { Spin } from './model/spinInterface';
+import { User } from './model/userModel';
+import { Order } from './model/orderModel';
+import { Spin } from './model/spinModel';
 
 
 dotenv.config();
