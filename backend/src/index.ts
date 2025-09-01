@@ -5,6 +5,7 @@ import dotenv from 'dotenv';
 import { User } from './model/userModel';
 import { Order } from './model/orderModel';
 import { Spin } from './model/spinModel';
+import { wheelSpin } from './utils/wheelSpin';
 
 
 dotenv.config();
@@ -19,6 +20,8 @@ app.listen(PORT, async () => {
   console.log(`Server is running at http://localhost:${PORT}`);
 });
 
+
+// Endpoint för att skapa en order och tilldela användaren ett spinn
 app.post("/order", async (req, res) => {
    
   const { id, userId } = req.body;
@@ -43,4 +46,23 @@ app.post("/order", async (req, res) => {
     await user.save();
 
     res.json({ message: "Bra jobbat, du fick ett spinn", spins: user.spins });
+});
+
+
+// Endpoint för att göra ett spin
+app.post("/spin", async (req, res) => {
+    const { id, userId } = req.body;
+    if (!id || !userId) return res.status(400).json({ error: "id och userId krävs" });
+
+    const user = await User.findOne({ id: userId });
+    if (!user || user.spins <= 0) return res.status(400).json({ error: "Du har inga spins, skapa en order för att få en" });
+
+    user.spins -= 1; // Spinn försvinner
+    await user.save();
+
+    const amount = wheelSpin();
+    const spin = new Spin({ id, userId, amount, createdAt: new Date() });
+    await spin.save();
+
+    res.json({ message: `Grattis! Du vann ${amount} kr. Du har ${user.spins} spins kvar.` });
 });
