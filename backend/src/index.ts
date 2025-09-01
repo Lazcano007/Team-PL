@@ -33,16 +33,13 @@ app.post("/order", async (req, res) => {
   
     if (!user) {
         user = new User({ id: userId, name: `User ${userId}`, spins: 0 }); // Skapa en ny användare om den inte finns
-  
       await user.save();
     }
 
     const order = new Order({ id, userId, createdAt: new Date() }); // Skapa en ny order 
-    
     await order.save();
 
     user.spins += 1; // Spinn tilldelas
-    
     await user.save();
 
     res.json({ message: "Bra jobbat, du fick ett spinn", spins: user.spins });
@@ -65,4 +62,16 @@ app.post("/spin", async (req, res) => {
     await spin.save();
 
     res.json({ message: `Grattis! Du vann ${amount} kr. Du har ${user.spins} spins kvar.` });
+});
+
+
+
+// Endpoint för att hämta historik
+app.get("/history/:userId", async (req, res) => {
+
+  const { userId } = req.params;  
+  const spinHistory = await Spin.find({ userId }).sort({ createdAt: -1 });  // Nyast spinn är först
+  
+  res.json(spinHistory);
+
 });
