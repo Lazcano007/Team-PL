@@ -6,13 +6,13 @@ type Props = {
 
 export default function Navbar({ current, onChange }: Props) {
   return (
-    <nav className="flex justify-between items-center px-6 py-4 border-b bg-white">
-      <div className="font-bold">Pedro</div>
+    <nav className="flex justify-between items-center px-6 py-4 bg-shade-50 text-shade-900">
+      <div className="font-bold text-xl">Pedro</div>
 
       <div className="flex gap-4 text-xl">
-        <button onClick={() => onChange("order")}className={ current === "order" ? "font-semibold underline" : "hover:underline"} >Lägg order</button>
-        <span className="text-zinc-400">Snurra hjul</span>
-        <button onClick={() => onChange("history")} className={ current === "history" ? "font-semibold underline" : "hover:underline"}>Historik</button>
+        <button onClick={() => onChange("order")}className={ current === "order" ? "underline cursor-pointer" : "hover:underline cursor-pointer"} >Lägg order</button>
+        <span className="text-zinc-400">Snurra hjul</span> {/* Fixa när sidan existerar */}
+        <button onClick={() => onChange("history")} className={ current === "history" ? "underline cursor-pointer" : "hover:underline cursor-pointer"}>Historik</button>
       </div>
     </nav>
   );
