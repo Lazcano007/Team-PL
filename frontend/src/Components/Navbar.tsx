@@ -6,7 +6,7 @@ type Props = {
 
 export default function Navbar({ current, onChange }: Props) {
   return (
-    <nav className="flex justify-between items-center px-6 py-4 bg-shade-50 text-shade-900">
+    <nav className="flex justify-between items-center px-6 py-4 bg-shade-50 text-shade-900 cursor-default">
       <div className="font-bold text-xl">Pedro</div>
 
       <div className="flex gap-4 text-xl">
