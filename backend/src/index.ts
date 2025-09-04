@@ -13,11 +13,11 @@ dotenv.config();
 const app = express();
 const PORT = process.env.PORT || 3000;
 connectDB();
-app.use(express.json());
 
 app.use(cors({
   origin: "http://localhost:5173",
 }));
+app.use(express.json());
 
 app.listen(PORT, async () => {
 //   await connectDB();
@@ -27,8 +27,8 @@ app.listen(PORT, async () => {
 
 // Endpoint för att skapa en order och tilldela användaren ett spinn
 app.post("/order", async (req, res) => {
-   
   const { id, userId } = req.body;
+  try { 
   
   if (!id || !userId) 
     return res.status(400).json({ error: "id och userId krävs" });
@@ -47,6 +47,11 @@ app.post("/order", async (req, res) => {
     await user.save();
 
     res.json({ message: "Bra jobbat, du fick ett spinn", spins: user.spins });
+
+  }catch (err) {
+    console.error("POST /order error:", err);
+    return res.status(500).json({ error: "Internal server error" });
+  }
 });
 
 
