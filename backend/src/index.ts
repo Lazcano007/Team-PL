@@ -6,7 +6,7 @@ import { User } from './model/userModel';
 import { Order } from './model/orderModel';
 import { Spin } from './model/spinModel';
 import { wheelSpin } from './utils/wheelSpin';
-
+import cors from "cors";
 
 dotenv.config();
 
@@ -14,6 +14,10 @@ const app = express();
 const PORT = process.env.PORT || 3000;
 connectDB();
 app.use(express.json());
+
+app.use(cors({
+  origin: "http://localhost:5173",
+}));
 
 app.listen(PORT, async () => {
 //   await connectDB();
