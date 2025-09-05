@@ -68,13 +68,15 @@ export default function Spin() {
       }
 
       const amount = Number(data.amount);
-      const prizeIndex = prizes.findIndex(p => p.amount === amount);
+      const prizeIndex = prizes.findIndex((p) => p.amount === amount);
 
       // Snurra hjulet
       const rotations = 5;
       const degreePerPrize = 360 / prizes.length;
       const finalDegree =
-        rotations * 360 + (prizeIndex >= 0 ? prizeIndex : 0) * degreePerPrize + degreePerPrize / 2;
+        rotations * 360 +
+        (prizeIndex >= 0 ? prizeIndex : 0) * degreePerPrize +
+        degreePerPrize / 2;
 
       if (wheelRef.current) {
         wheelRef.current.style.transition =
@@ -83,7 +85,11 @@ export default function Spin() {
       }
 
       setTimeout(() => {
-        setResult(amount ? `Grattis, du vann ${amount}kr!` : "Fel vid spinnet. Försök igen");
+        setResult(
+          amount
+            ? `Grattis, du vann ${amount}kr!`
+            : "Fel vid spinnet. Försök igen"
+        );
         setSpinsLeft(data.spinsLeft);
         setLoading(false);
 
@@ -93,7 +99,6 @@ export default function Spin() {
           wheelRef.current.style.transform = `rotate(${normalized}deg)`;
         }
       }, 4000);
-
     } catch (err) {
       console.error(err);
       setResult("Något gick fel vid spinnet");
@@ -111,9 +116,14 @@ export default function Spin() {
           ref={wheelRef}
           className="w-full h-full rounded-full overflow-hidden relative"
           style={{
-            background: `conic-gradient(${prizes.map((p, i) =>
-              `${p.color} ${i * (100 / prizes.length)}% ${(i + 1) * (100 / prizes.length)}%`
-            ).join(",")})`
+            background: `conic-gradient(${prizes
+              .map(
+                (p, i) =>
+                  `${p.color} ${i * (100 / prizes.length)}% ${
+                    (i + 1) * (100 / prizes.length)
+                  }%`
+              )
+              .join(",")})`,
           }}
         >
           {displayAmounts.map((amount, i) => {
@@ -121,7 +131,7 @@ export default function Spin() {
             return (
               <div
                 key={i}
-                className="absolute text-sm font-bold text-white"
+                className="absolute text-sm font-bold text-shade-50"
                 style={{
                   top: "45%",
                   left: "45%",
@@ -134,14 +144,18 @@ export default function Spin() {
             );
           })}
         </div>
+
+        {/* Pekare på summa */}
+        <div
+          className="absolute top-0 left-1/2 -translate-x-1/2 z-10
+              w-0 h-0 border-l-[12px] border-l-transparent
+              border-r-[12px] border-r-transparent
+              border-t-[20px] border-t-red-500"
+        ></div>
       </div>
 
-      <Button onClick={handleSpin}>
-        {loading ? "Snurrar..." : "Snurra"}
-      </Button>
-      {result && (
-        <p className="mt-4 text-center italic text-zinc-700">{result}</p>
-      )}
+      <Button onClick={handleSpin}>{loading ? "Snurrar..." : "Snurra"}</Button>
+      {result && <p className="text-center italic text-zinc-700">{result}</p>}
     </div>
   );
 }
