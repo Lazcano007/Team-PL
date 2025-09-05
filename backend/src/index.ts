@@ -73,7 +73,9 @@ app.post("/spin", async (req, res) => {
   await spin.save();
 
   res.json({
-    message: `Grattis! Du vann ${amount} kr. Du har ${user.spins} spins kvar.`,
+    message: `Grattis, du vann ${amount} kr!`,
+    amount: amount,
+    spinsLeft: user.spins,
   });
 });
 
