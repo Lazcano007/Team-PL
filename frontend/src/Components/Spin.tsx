@@ -43,6 +43,64 @@ export default function Spin() {
     fetchSpins();
   }, []);
 
+  async function handleSpin() {
+    if (spinsLeft <= 0) {
+      alert("Du har inga spins kvar!");
+      return;
+    }
+
+    setLoading(true);
+    setResult(null);
+
+    try {
+      const res = await fetch(`${API_URL}spin`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ id: Date.now().toString(), userId: USER_ID }),
+      });
+
+      const data: SpinResult | { error: string } = await res.json();
+
+      if ("error" in data) {
+        setResult(data.error);
+        setLoading(false);
+        return;
+      }
+
+      const amount = Number(data.amount);
+      const prizeIndex = prizes.findIndex(p => p.amount === amount);
+
+      // Snurra hjulet
+      const rotations = 5;
+      const degreePerPrize = 360 / prizes.length;
+      const finalDegree =
+        rotations * 360 + (prizeIndex >= 0 ? prizeIndex : 0) * degreePerPrize + degreePerPrize / 2;
+
+      if (wheelRef.current) {
+        wheelRef.current.style.transition =
+          "transform 4s cubic-bezier(0.33, 1, 0.68, 1)";
+        wheelRef.current.style.transform = `rotate(${finalDegree}deg)`;
+      }
+
+      setTimeout(() => {
+        setResult(amount ? `Grattis, du vann ${amount}kr!` : "Fel vid spinnet. Försök igen");
+        setSpinsLeft(data.spinsLeft);
+        setLoading(false);
+
+        if (wheelRef.current) {
+          wheelRef.current.style.transition = "none";
+          const normalized = finalDegree % 360;
+          wheelRef.current.style.transform = `rotate(${normalized}deg)`;
+        }
+      }, 4000);
+
+    } catch (err) {
+      console.error(err);
+      setResult("Något gick fel vid spinnet");
+      setLoading(false);
+    }
+  }
+
   return (
     <div className="w-full max-w-md flex flex-col items-center gap-6">
       <p className="text-center text-zinc-600">Spins kvar: {spinsLeft}</p>
@@ -78,7 +136,9 @@ export default function Spin() {
         </div>
       </div>
 
-      <Button onClick={() => {}}>Snurra</Button>
+      <Button onClick={handleSpin}>
+        {loading ? "Snurrar..." : "Snurra"}
+      </Button>
       {result && (
         <p className="mt-4 text-center italic text-zinc-700">{result}</p>
       )}
