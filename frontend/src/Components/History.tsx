@@ -2,15 +2,13 @@ import { useEffect, useMemo, useState } from "react";
 
 const API_URL = import.meta.env.VITE_API_URL;
 
-
 type SpinRow = {
   _id?: string;
   id?: string;
   userId: string;
-  amount: number;       
-  createdAt: string;    
+  amount: number;
+  createdAt: string;
 };
-
 
 export default function History() {
   const [items, setItems] = useState<SpinRow[]>([]);
@@ -33,7 +31,9 @@ export default function History() {
 
       if (!API_URL) throw new Error("Saknar VITE_API_URL i frontend/.env");
 
-      const res = await fetch(`${API_URL}/history/${encodeURIComponent(userId)}`);
+      const res = await fetch(
+        `${API_URL}/history/${encodeURIComponent(userId)}`
+      );
       const text = await res.text(); // robust parse
       let data: SpinRow[];
       try {
@@ -41,7 +41,8 @@ export default function History() {
       } catch {
         throw new Error("Servern returnerade inte JSON");
       }
-      if (!res.ok) throw new Error((data as any)?.error || "Kunde inte hämta historik");
+      if (!res.ok)
+        throw new Error((data as any)?.error || "Kunde inte hämta historik");
 
       // förväntas redan vara sorterad nyast först i backend
       setItems(Array.isArray(data) ? data : []);
@@ -55,7 +56,6 @@ export default function History() {
   useEffect(() => {
     load();
   }, [userId]);
-
 
   return (
     <main className="min-h-[calc(100vh-56px)] bg-zinc-50">
@@ -79,7 +79,9 @@ export default function History() {
           {err && <p className="text-sm text-red-600">Fel: {err}</p>}
 
           {!loading && !err && items.length === 0 && (
-            <p className="text-zinc-600">Inga spins ännu. Lägg en order och snurra hjulet!</p>
+            <p className="text-zinc-600">
+              Inga spins ännu. Lägg en order och snurra hjulet!
+            </p>
           )}
 
           {!loading && !err && items.length > 0 && (
@@ -87,7 +89,10 @@ export default function History() {
               {items.map((it, i) => {
                 const d = new Date(it.createdAt);
                 const date = d.toLocaleDateString("sv-SE");
-                const time = d.toLocaleTimeString("sv-SE", { hour: "2-digit", minute: "2-digit" });
+                const time = d.toLocaleTimeString("sv-SE", {
+                  hour: "2-digit",
+                  minute: "2-digit",
+                });
                 return (
                   <li key={it._id || it.id || i} className="leading-5">
                     <span className="italic">
