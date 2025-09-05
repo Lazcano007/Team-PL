@@ -1,44 +1,43 @@
-type Props = {
-  current: "order" | "spin" | "history";
-  onChange: (page: "order" | "spin" | "history") => void;
-};
+import { NavLink } from "react-router-dom";
 
-export default function Navbar({ current, onChange }: Props) {
+export default function Navbar() {
   return (
     <nav className="flex justify-between items-center px-6 py-4 bg-shade-50 text-shade-900 cursor-default">
       <div className="font-bold text-xl">Pedro</div>
 
       <div className="flex gap-4 text-xl">
-        <button
-          onClick={() => onChange("order")}
-          className={
-            current === "order"
+        <NavLink
+          to="/order"
+          className={({ isActive }) =>
+            isActive
               ? "underline cursor-pointer"
               : "hover:underline cursor-pointer"
           }
         >
           Lägg order
-        </button>
-        <button
-          onClick={() => onChange("spin")}
-          className={
-            current === "spin"
+        </NavLink>
+
+        <NavLink
+          to="/spin"
+          className={({ isActive }) =>
+            isActive
               ? "underline cursor-pointer"
               : "hover:underline cursor-pointer"
           }
         >
           Snurra hjulet
-        </button>
-        <button
-          onClick={() => onChange("history")}
-          className={
-            current === "history"
+        </NavLink>
+
+        <NavLink
+          to="/history"
+          className={({ isActive }) =>
+            isActive
               ? "underline cursor-pointer"
               : "hover:underline cursor-pointer"
           }
         >
           Historik
-        </button>
+        </NavLink>
       </div>
     </nav>
   );
