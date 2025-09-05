@@ -1,27 +1,20 @@
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Navbar from "./Components/Navbar";
-import Button from "./Components/Button";
-import OrderForm from "./Components/OrderForm";
-import { useState } from "react";
-import History from "./Components/History";
-import Spin from "./Components/Spin"
+import OrderPage from "./pages/OrderPage";
+import SpinWheel from "./pages/spinWheel";
+import HistoryPage from "./pages/HistoryPage";
 
-
-
-function App() { 
-  const [page, setPage] = useState<"order" | "spin" | "history">("order");
-  
+function App() {
   return (
-    <>
-      <Navbar current={page} onChange={setPage} />
-      {page === "order" && <OrderForm />}
-      {page === "spin" && <Spin />}
-      {page === "history" && <History />}
-    </>
+    <Router>
+      <Navbar />
+      <Routes>
+        <Route path="/order" element={<OrderPage />} />
+        <Route path="/spin" element={<SpinWheel />} />
+        <Route path="/history" element={<HistoryPage />} />
+      </Routes>
+    </Router>
   );
 }
 
 export default App;
-
-
-
-/// göra om !! DET ÄR FEL!!!! 
