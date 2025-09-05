@@ -1,7 +1,7 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Navbar from "./Components/Navbar";
 import OrderPage from "./pages/OrderPage";
-import SpinWheel from "./pages/spinWheel";
+import SpinWheel from "./pages/SpinWheel";
 import HistoryPage from "./pages/HistoryPage";
 
 function App() {
