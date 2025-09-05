@@ -100,7 +100,9 @@ export default function OrderForm() {
             type="submit"
             disabled={loading}
             className={`w-full rounded-xl px-4 py-2 font-bold cursor-pointer ${
-              loading ? "bg-gray-300 cursor-not-allowed" : "bg-indigo-200 hover:bg-indigo-300"
+              loading
+                ? "bg-gray-300 cursor-not-allowed"
+                : "bg-indigo-200 hover:bg-indigo-300"
             }`}
           >
             {loading ? "Skickar..." : "Lägg order"}
@@ -113,7 +115,12 @@ export default function OrderForm() {
 
         {status && (
           <p className="text-center italic text-zinc-800">
-            {status} {spins !== null && <span>(Du har nu <b>{spins}</b> spin/s)</span>}
+            {status}{" "}
+            {spins !== null && (
+              <span>
+                (Du har nu <b>{spins}</b> spin/s)
+              </span>
+            )}
           </p>
         )}
       </section>
