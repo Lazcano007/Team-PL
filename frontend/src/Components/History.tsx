@@ -58,7 +58,7 @@ export default function History() {
   }, [userId]);
 
   return (
-    <div className="mx-auto w-full max-w-md rounded-xl border bg-white p-5 shadow-sm">
+    <div className="flex flex-col gap-6 mx-auto w-full max-w-md rounded-xl p-6 shadow-[0_5px_4px_0_#00000040] border-1 border-[#c6bfbf] bg-white">
       <div className="flex items-center justify-between mb-3">
         <p className="text-xs text-zinc-400">
           userId: <span className="font-mono">{userId}</span>
