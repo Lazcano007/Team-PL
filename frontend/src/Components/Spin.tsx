@@ -7,8 +7,17 @@ type SpinResult = {
   amount?: number;
 };
 
-const USER_ID = "user123"; // test-user
 
+function getUserId() {
+  let uid = localStorage.getItem("userId");
+  if (!uid) {
+    uid = "user-" + Math.random().toString(36).slice(2, 10);
+    localStorage.setItem("userId", uid);
+  }
+  return uid;
+}
+
+const USER_ID = getUserId();
 // Priser med färg, matchar med backend
 const prizes = [
   { amount: 500, color: "#f87171" },
@@ -33,7 +42,7 @@ export default function Spin() {
   useEffect(() => {
     async function fetchSpins() {
       try {
-        const res = await fetch(`${API_URL}user/${USER_ID}`);
+        const res = await fetch(`${API_URL}/user/${USER_ID}`);
         const data = await res.json();
         if (data.spins !== undefined) setSpinsLeft(data.spins);
       } catch (err) {
@@ -53,7 +62,7 @@ export default function Spin() {
     setResult(null);
 
     try {
-      const res = await fetch(`${API_URL}spin`, {
+      const res = await fetch(`${API_URL}/spin`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ id: Date.now().toString(), userId: USER_ID }),
