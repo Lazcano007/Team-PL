@@ -1,9 +1,9 @@
 export const prizes = [
-  { amount: 10, chance: 50 },
+  { amount: 10, chance: 50 },  // Högst chans 
   { amount: 20, chance: 30 },
   { amount: 50, chance: 15 },
   { amount: 100, chance: 4 },
-  { amount: 500, chance: 1 },
+  { amount: 500, chance: 1 },  // Lägst chans
 ];
 
 export function wheelSpin(): number {
